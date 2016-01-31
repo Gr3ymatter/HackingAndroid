@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">HackingAndroid</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="api_demo_title">Api Demos</string>
+    <string name="notes_title">Api Notes</string>
+
+
+
+</resources>
