@@ -1,13 +1,18 @@
 package com.gr3ymatter.hackingandroid;
 
+
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +28,7 @@ public class ApiDemoFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private String LOG_TAG = "APIFRAGMENT_LOG";
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -64,7 +70,38 @@ public class ApiDemoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_api_demo, container, false);
+
+        View rootView = inflater.inflate(R.layout.gridview_main, container, false);
+
+        GridView gridView = (GridView)rootView.findViewById(R.id.gridview);
+        gridView.setAdapter(new GridViewAdapter(getActivity()));
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                GridViewAdapter.Concepts concept = (GridViewAdapter.Concepts) parent.getItemAtPosition(position);
+                Toast.makeText(getContext(),concept.demoActivityName,Toast.LENGTH_LONG).show();
+
+                /*
+                 * The Following Try catch block was necessary to programmatically launch the activity from a string.
+                  * The Activity was not found when using the Intent.setClass() method
+                 */
+
+                try{
+                    String className = "com.gr3ymatter.hackingandroid.demos." + concept.demoActivityName;
+                    Intent activityIntent = new Intent(getContext(), Class.forName(className));
+                    startActivity(activityIntent);
+                }catch(Exception e)
+                {
+                    Log.e(LOG_TAG,"Could Not Find Class Name");
+                }
+
+
+
+            }
+        });
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
